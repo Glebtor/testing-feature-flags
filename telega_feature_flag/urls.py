@@ -19,15 +19,22 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-
-from demo.views import index_gargoyle, index_waffle
-
+from django.conf.urls import include
+from playground.views import index_gargoyle, index_waffle
+import nexus
 
 gargoyle.autodiscover()
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
+    # we need a special frontend for gargoyle ff management, it gives more
+    # abilities to customize conditions who see feature and who don't
+    url(r'^admin/feature-flags/', include(nexus.site.urls)),
     url(r'^g/', index_gargoyle, name='gargoyle'),
+
+    url('^nexus/', include(nexus.site.urls)),
+
     url(r'^w/', index_waffle, name='waffle'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

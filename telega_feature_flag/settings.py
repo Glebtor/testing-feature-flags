@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'gargoyle',
+    'nexus',
 
-    'demo',
+    'waffle',
+
+    'playground',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -52,6 +55,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'waffle.middleware.WaffleMiddleware',
 ]
 
 ROOT_URLCONF = 'telega_feature_flag.urls'
@@ -74,19 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'telega_feature_flag.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-# You need postgres 9.4+
-
-
-# Password validation
-# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -97,10 +89,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
-
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -110,5 +98,13 @@ STATICFILES_DIRS = [
 
 try:
     from .settings_local import *
+except:
+    pass
+
+# adding Gargoyle feature flags & configuring Nexus frontend
+NEXUS_SKIP_INSTALLED_APPS_REQUIREMENTS = True
+NEXUS_MEDIA_PREFIX = '/admin/feature-flags/media'
+try:
+    from .feature_flags import *
 except:
     pass
